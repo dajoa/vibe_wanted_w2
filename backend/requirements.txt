@@ -1,0 +1,27 @@
+# FastAPI 웹 프레임워크
+fastapi
+
+# ASGI 서버 (표준 기능 포함)
+uvicorn
+
+# LangGraph Agent 프레임워크
+langgraph
+
+# LangChain 도구들
+langchain
+langchain-google-genai
+langchain-community
+
+# 환경 변수 로드
+python-dotenv
+
+# HTTP 클라이언트
+httpx
+
+# Pydantic 데이터 검증
+pydantic
+
+# 추가된 패키지
+langsmith
+pytest
+pytest-asyncio 

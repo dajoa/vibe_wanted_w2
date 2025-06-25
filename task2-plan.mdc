@@ -1,0 +1,132 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# TASK-002: FastAPI 백엔드 기본 구조 구현 개발 계획
+
+## 구현 항목
+
+### 1. FastAPI 메인 애플리케이션 생성
+- backend/app/main.py 파일 구현
+- FastAPI 인스턴스 생성 및 기본 설정
+- 애플리케이션 제목, 버전, 설명 설정
+
+### 2. 기본 API 엔드포인트 구현
+- 루트 엔드포인트 (GET /) - 서버 상태 확인
+- 헬스 체크 엔드포인트 (GET /health) - 서버 상태 모니터링
+- API 정보 엔드포인트 (GET /info) - 서버 정보 제공
+
+### 3. 챗봇 API 라우터 구현
+- backend/app/api/chat.py 파일 생성
+- APIRouter 인스턴스 생성
+- POST /search 엔드포인트 구현 (동기 방식)
+- 요청/응답 모델 정의 (Pydantic BaseModel)
+
+### 4. 의존성 및 설정 관리
+- backend/app/config.py 파일 생성
+- 환경 변수 로드 및 설정 관리
+- API 키 및 서버 설정 구조 정의
+
+### 6. 서버 실행 및 배포 설정
+- uvicorn 서버 실행 스크립트 작성
+- 개발/운영 환경 분리 설정
+- 환경 변수 기반 서버 설정
+
+## 기술 스택 및 라이브러리
+
+### FastAPI 프레임워크
+- **FastAPI**: ASGI 웹 프레임워크 (메인 애플리케이션)
+- **uvicorn[standard]**: ASGI 서버 (개발 및 운영 서버)
+- **python-dotenv**: 환경 변수 로드
+- **pydantic**: 데이터 검증 및 시리얼라이제이션
+
+### API 구조 (Context7 참고)
+- **FastAPI 인스턴스**: `app = FastAPI()` 패턴 사용
+- **APIRouter**: 모듈별 라우터 분리 (`router = APIRouter()`)
+- **라우터 포함**: `app.include_router()` 메서드 활용
+- **경로 파라미터**: `@router.get("/endpoint")` 데코레이터 패턴
+
+### 미들웨어 및 설정
+- **CORS 미들웨어**: 프론트엔드 연동을 위한 CORS 설정
+- **로깅 미들웨어**: 요청/응답 로그 기록
+- **예외 처리**: HTTPException 및 전역 예외 처리기
+
+### 환경 설정
+- **FASTAPI_HOST**: 서버 호스트 설정 (기본: localhost)
+- **FASTAPI_PORT**: 서버 포트 설정 (기본: 8000)
+- **LANGSMITH_API_KEY**: LangSmith 모니터링 API 키
+
+## 개발 계획
+
+### Phase 1: 기본 애플리케이션 구조 (1-6단계)
+1. backend/app/main.py 메인 애플리케이션 파일 생성
+2. FastAPI 인스턴스 생성 및 기본 설정
+3. 기본 루트 엔드포인트 구현 (GET /)
+4. 헬스 체크 엔드포인트 구현 (GET /health)
+5. API 정보 엔드포인트 구현 (GET /info)
+6. CORS 미들웨어 설정
+
+### Phase 2: 설정 및 환경 관리 (7-10단계)
+7. backend/app/config.py 설정 파일 생성
+8. 환경 변수 로드 기능 구현
+9. 서버 설정 구조 정의
+10. 개발/운영 환경 분리 설정
+
+### Phase 3: 챗봇 API 라우터 구현 (11-15단계)
+11. backend/app/api/chat.py 라우터 파일 생성
+12. APIRouter 인스턴스 생성 및 설정
+13. 챗봇 요청 모델 정의 (Pydantic BaseModel)
+14. 챗봇 응답 모델 정의 (Pydantic BaseModel)
+15. POST /search 엔드포인트 구현 (동기 방식)
+
+### Phase 4: 미들웨어 및 예외 처리 (16-19단계)
+16. 전역 예외 처리기 구현
+17. 로깅 미들웨어 설정
+18. 요청/응답 로깅 기능 구현
+19. HTTPException 처리 로직 구현
+
+### Phase 5: 서버 실행 및 통합 (20-23단계)
+20. uvicorn 서버 실행 스크립트 작성
+21. 라우터를 메인 애플리케이션에 포함
+22. 서버 실행 테스트 및 검증
+23. API 문서 자동 생성 확인 (/docs, /redoc)
+
+## 핵심 구현 패턴 (Context7 기반)
+
+### FastAPI 애플리케이션 구조
+- 메인 애플리케이션: `app = FastAPI(title="Shopping Chat Agent")`
+- 라우터 분리: `router = APIRouter(prefix="/api/v1", tags=["chat"])`
+- 라우터 포함: `app.include_router(chat_router)`
+
+### API 엔드포인트 패턴
+- 동기 엔드포인트: `def` 함수 사용 (non-streaming)
+- 경로 데코레이터: `@router.post("/search")`
+- 응답 모델: `response_model=ChatResponse`
+
+### 요청/응답 모델 구조
+- 요청 모델: `class ChatRequest(BaseModel)`
+- 응답 모델: `class ChatResponse(BaseModel)`
+- 데이터 검증: Pydantic 자동 검증 활용
+
+### 서버 실행 설정
+- 개발 서버: `uvicorn app.main:app --reload --host localhost --port 8000`
+- 환경 변수: `python-dotenv`로 .env 파일 로드
+- 설정 관리: 중앙집중식 config.py 모듈
+
+## 테스트 전략
+
+### 단위 테스트
+- FastAPI 애플리케이션 인스턴스 생성 테스트
+- 각 엔드포인트 응답 테스트
+- 요청/응답 모델 검증 테스트
+
+### 통합 테스트
+- 서버 시작/종료 테스트
+- API 엔드포인트 전체 플로우 테스트
+- 환경 설정 로드 테스트
+
+### API 문서 테스트
+- Swagger UI (/docs) 접근 테스트
+- ReDoc (/redoc) 접근 테스트
+- OpenAPI 스키마 생성 테스트

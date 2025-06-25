@@ -1,0 +1,25 @@
+# 테스트 프레임워크
+pytest
+pytest-asyncio
+pytest-cov
+
+# 비동기 HTTP 클라이언트 (테스트용)
+httpx
+
+# 코드 포맷터
+black
+
+# 코드 린터
+flake8
+
+# 타입 체커 
+mypy
+
+# 테스트 커버리지
+coverage
+
+# 테스트 목킹
+pytest-mock
+
+# GitHub Actions 로컬 테스트 (선택사항)
+# act 

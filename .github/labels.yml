@@ -1,0 +1,106 @@
+---
+# 이슈 타입 라벨
+- name: "bug"
+  color: "d73a4a"
+  description: "버그 신고"
+
+- name: "enhancement"
+  color: "a2eeef" 
+  description: "기능 개선 및 새 기능"
+
+- name: "documentation"
+  color: "0075ca"
+  description: "문서 관련"
+
+- name: "question"
+  color: "d876e3"
+  description: "질문"
+
+- name: "tests"
+  color: "c2e0c6"
+  description: "테스트 관련"
+
+# 컴포넌트 라벨
+- name: "backend"
+  color: "fbca04"
+  description: "백엔드 관련"
+
+- name: "frontend" 
+  color: "1d76db"
+  description: "프론트엔드 관련"
+
+- name: "agent"
+  color: "0e8a16"
+  description: "Agent 관련"
+
+- name: "api"
+  color: "f29513"
+  description: "API 관련"
+
+- name: "ci/cd"
+  color: "5319e7"
+  description: "CI/CD 관련"
+
+# 우선순위 라벨
+- name: "priority/high"
+  color: "b60205"
+  description: "높은 우선순위"
+
+- name: "priority/medium"
+  color: "fbca04"
+  description: "보통 우선순위"
+
+- name: "priority/low"
+  color: "0e8a16"
+  description: "낮은 우선순위"
+
+# 크기 라벨
+- name: "size/S"
+  color: "c2e0c6"
+  description: "작은 크기 (< 50 lines)"
+
+- name: "size/M"
+  color: "fbca04"
+  description: "중간 크기 (50-200 lines)"
+
+- name: "size/L"
+  color: "f29513"
+  description: "큰 크기 (200-500 lines)"
+
+- name: "size/XL"
+  color: "d73a4a"
+  description: "매우 큰 크기 (> 500 lines)"
+
+# 상태 라벨
+- name: "good first issue"
+  color: "7057ff"
+  description: "처음 기여하기 좋은 이슈"
+
+- name: "help wanted"
+  color: "008672"
+  description: "도움이 필요한 이슈"
+
+- name: "wontfix"
+  color: "ffffff"
+  description: "수정하지 않음"
+
+- name: "duplicate"
+  color: "cfd3d7"
+  description: "중복 이슈"
+
+- name: "invalid"
+  color: "e4e669"
+  description: "유효하지 않은 이슈"
+
+# 특별 라벨
+- name: "refactoring"
+  color: "f9d0c4"
+  description: "리팩토링"
+
+- name: "performance"
+  color: "0052cc"
+  description: "성능 개선"
+
+- name: "security"
+  color: "b60205"
+  description: "보안 관련" 

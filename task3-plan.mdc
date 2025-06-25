@@ -1,0 +1,81 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# TASK-003 개발 계획 - LangGraph Agent 구현
+
+## 구현 항목
+
+### 1. LangGraph React Agent 구현
+- 단일 턴(single turn) React Agent 설정
+- Gemini 모델 연동
+- 동기 방식 구현 (스트리밍 없음)
+
+### 2. 웹 검색 Tool 연동
+- LangChain DuckDuckGo Search Tool 구현
+- 상품 검색 기능
+- 검색 결과 처리
+
+### 3. 백엔드 API 통합
+- FastAPI 엔드포인트에서 Agent 호출
+- Agent 응답 결과 반환
+- 에러 처리
+
+### 4. 모니터링 설정
+- LangSmith 연동
+- Agent 실행 추적
+
+## 기술 스택 및 라이브러리
+
+### 핵심 프레임워크
+- **LangGraph**: React Agent 구현
+- **LangChain**: Tool 및 LLM 연동
+- **FastAPI**: 백엔드 API 서버
+
+### LLM 및 도구
+- **Google Gemini-2.5-flash-preview-05-20**: 언어 모델
+- **LangChain DuckDuckGo**: 웹 검색 도구
+- **LangSmith**: 모니터링 및 추적
+
+### 설정 및 환경
+- **python-dotenv**: 환경 변수 관리
+- **pydantic**: 데이터 검증 및 설정
+
+## 개발 계획
+
+### 1단계: 환경 설정 및 의존성 구성
+- 필요한 패키지 설치
+- 환경 변수 설정 (.env 파일)
+- LangSmith 설정
+
+### 2단계: DuckDuckGo Search Tool 구현
+- LangChain DuckDuckGo Tool 설정
+- 검색 기능 테스트
+- 결과 포맷팅
+
+### 3단계: Gemini LLM 연동
+- Google Gemini 모델 초기화
+- 모델 설정 및 파라미터 조정
+- 기본 연결 테스트
+
+### 4단계: React Agent 구성
+- create_react_agent로 Agent 생성
+- Tool과 LLM 바인딩
+- 시스템 프롬프트 설정
+
+### 5단계: Agent 서비스 클래스 구현
+- Agent 실행 서비스 구현
+- 입력 검증 및 처리
+- 결과 반환 로직
+
+### 6단계: FastAPI 엔드포인트 연동
+- Agent 호출 API 구현
+- 요청/응답 모델 정의
+- 에러 핸들링
+
+
+### 8단계: LangSmith 모니터링 연동
+- 추적 설정
+- 실행 로그 확인
+- 성능 모니터링

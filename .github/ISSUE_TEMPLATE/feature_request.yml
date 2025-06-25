@@ -1,0 +1,111 @@
+name: ✨ 기능 요청
+description: 새로운 기능이나 개선사항을 제안해주세요
+title: "[FEATURE] "
+labels: ["enhancement", "priority/medium"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        새로운 기능을 제안해주셔서 감사합니다! 아래 정보를 작성해주시면 더 나은 기능을 개발할 수 있습니다.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: ✨ 기능 설명
+      description: 요청하는 기능에 대해 명확하고 간결하게 설명해주세요.
+      placeholder: 어떤 기능을 원하시나요?
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-solution
+    attributes:
+      label: 🤔 해결하고자 하는 문제
+      description: 이 기능이 어떤 문제를 해결하나요?
+      placeholder: 현재 어떤 불편함이나 제한사항이 있나요?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: 💡 제안하는 해결책
+      description: 어떻게 구현되면 좋을지 설명해주세요.
+      placeholder: 구체적인 구현 방법이나 동작 방식을 설명해주세요.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 🏗️ 관련 컴포넌트
+      description: 어느 부분의 기능인가요?
+      options:
+        - Backend (FastAPI)
+        - Frontend (Streamlit)
+        - Agent (LangGraph)
+        - API
+        - 전체
+        - 기타
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🎯 우선순위
+      description: 이 기능의 중요도는 어느 정도인가요?
+      options:
+        - 높음 (즉시 필요)
+        - 보통 (있으면 좋음)
+        - 낮음 (나중에라도)
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: 🎪 사용 사례
+      description: 이 기능을 어떤 상황에서 사용하게 될까요?
+      placeholder: |
+        1. 사용자가 ...할 때
+        2. ...상황에서
+        3. ...를 위해
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: 🌟 기대 효과
+      description: 이 기능이 추가되면 어떤 좋은 점이 있을까요?
+      placeholder: 사용성 개선, 성능 향상, 새로운 가능성 등
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 대안
+      description: 다른 해결 방법이나 우회 방법이 있나요?
+      placeholder: 현재 어떻게 해결하고 있거나, 다른 방법들
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 추가 정보
+      description: 참고할 만한 자료나 추가 정보가 있다면 공유해주세요.
+      placeholder: 관련 링크, 스크린샷, 다른 도구의 예시 등
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 확인사항
+      description: 기능 요청 전 확인해주세요.
+      options:
+        - label: 중복된 기능 요청이 없는지 확인했습니다.
+          required: true
+        - label: 이 기능이 프로젝트 목표와 일치한다고 생각합니다.
+          required: true
+        - label: 가능하다면 구현에 참여할 의향이 있습니다.
+          required: false 

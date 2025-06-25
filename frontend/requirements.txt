@@ -1,0 +1,11 @@
+# Streamlit 웹 인터페이스 프레임워크
+streamlit
+
+# HTTP 클라이언트 (백엔드 API 호출용)
+requests
+
+# 챗봇 UI 컴포넌트 (선택적)
+streamlit-chat
+
+# 테스트 프레임워크
+pytest 

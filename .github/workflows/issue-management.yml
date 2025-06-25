@@ -1,0 +1,239 @@
+name: Issue Management
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  issue-comment:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+    - name: 이슈 생성 시 안내 댓글 추가
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const body = `
+          ## 이슈 등록 안내 👋
+          
+          이슈를 등록해주셔서 감사합니다! 빠른 처리를 위해 다음 사항들을 확인해주세요:
+          
+          ### 버그 신고의 경우
+          - [ ] 문제 상황을 명확하게 설명했나요?
+          - [ ] 재현 단계를 포함했나요?
+          - [ ] 예상 결과와 실제 결과를 구분했나요?
+          - [ ] 환경 정보 (OS, Python 버전 등)를 포함했나요?
+          - [ ] 스크린샷이나 로그를 첨부했나요?
+          
+          ### 기능 요청의 경우
+          - [ ] 요청하는 기능을 명확하게 설명했나요?
+          - [ ] 사용 사례(Use Case)를 포함했나요?
+          - [ ] 기대 효과를 설명했나요?
+          
+          ### 질문의 경우
+          - [ ] 무엇을 시도했는지 설명했나요?
+          - [ ] 관련 코드나 설정을 포함했나요?
+          - [ ] 문서를 먼저 확인했나요?
+          
+          담당자가 배정되어 빠르게 검토하겠습니다!
+          
+          ---
+          *이 댓글은 자동으로 생성되었습니다.*
+          `;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          });
+
+  issue-assigner:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+    - name: 이슈 타입별 담당자 자동 할당
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue;
+          const title = issue.title.toLowerCase();
+          const body = issue.body ? issue.body.toLowerCase() : '';
+          const labels = issue.labels.map(label => label.name.toLowerCase());
+          
+          let assignees = [];
+          
+          // 이슈 타입별 담당자 할당 (실제 GitHub 사용자명으로 변경 필요)
+          if (title.includes('bug') || title.includes('버그') || labels.includes('bug')) {
+            // 버그는 백엔드/프론트엔드 담당자에게 할당
+            if (title.includes('backend') || body.includes('backend')) {
+              assignees.push('backend-maintainer'); // 실제 사용자명으로 변경
+            } else if (title.includes('frontend') || body.includes('frontend')) {
+              assignees.push('frontend-maintainer'); // 실제 사용자명으로 변경
+            } else {
+              assignees.push('project-lead'); // 실제 사용자명으로 변경
+            }
+          } else if (title.includes('feature') || title.includes('기능') || labels.includes('enhancement')) {
+            // 새 기능은 프로젝트 리더에게
+            assignees.push('project-lead'); // 실제 사용자명으로 변경
+          } else if (title.includes('docs') || title.includes('문서') || labels.includes('documentation')) {
+            // 문서는 문서 담당자에게
+            assignees.push('docs-maintainer'); // 실제 사용자명으로 변경
+          } else if (title.includes('question') || title.includes('질문') || labels.includes('question')) {
+            // 질문은 프로젝트 리더에게
+            assignees.push('project-lead'); // 실제 사용자명으로 변경
+          }
+          
+          // 할당자가 없으면 이슈 생성자를 할당
+          if (assignees.length === 0) {
+            assignees.push(issue.user.login);
+          }
+          
+          // 실제 GitHub 사용자가 존재하는지 확인 후 할당
+          // 여기서는 주석 처리하고 실제 사용 시 사용자명을 변경해야 함
+          /*
+          try {
+            await github.rest.issues.addAssignees({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              assignees: assignees
+            });
+          } catch (error) {
+            console.log('할당 실패:', error.message);
+          }
+          */
+          
+          // 대신 댓글로 할당 정보 안내
+          const assigneeComment = `
+          ## 담당자 할당 안내 👥
+          
+          이슈 타입에 따라 다음 담당자들이 검토할 예정입니다:
+          - ${assignees.join(', ')}
+          
+          ---
+          *실제 할당을 위해서는 GitHub Actions 설정에서 사용자명을 수정해주세요.*
+          `;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: assigneeComment
+          });
+
+  issue-labeler:
+    if: github.event.action == 'opened' || github.event.action == 'edited'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+    - name: 키워드 기반 자동 라벨링
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue;
+          const title = issue.title.toLowerCase();
+          const body = issue.body ? issue.body.toLowerCase() : '';
+          
+          const labels = new Set();
+          
+          // 이슈 타입 라벨링
+          if (title.includes('bug') || title.includes('버그') || title.includes('오류') || title.includes('error')) {
+            labels.add('bug');
+          }
+          if (title.includes('feature') || title.includes('기능') || title.includes('추가')) {
+            labels.add('enhancement');
+          }
+          if (title.includes('docs') || title.includes('문서') || title.includes('documentation')) {
+            labels.add('documentation');
+          }
+          if (title.includes('question') || title.includes('질문') || title.includes('help')) {
+            labels.add('question');
+          }
+          if (title.includes('test') || title.includes('테스트')) {
+            labels.add('tests');
+          }
+          
+          // 컴포넌트별 라벨링
+          if (title.includes('backend') || body.includes('backend') || body.includes('fastapi')) {
+            labels.add('backend');
+          }
+          if (title.includes('frontend') || body.includes('frontend') || body.includes('streamlit')) {
+            labels.add('frontend');
+          }
+          if (title.includes('agent') || body.includes('agent') || body.includes('langgraph')) {
+            labels.add('agent');
+          }
+          if (title.includes('api') || body.includes('api')) {
+            labels.add('api');
+          }
+          
+          // 우선순위 라벨링
+          if (title.includes('urgent') || title.includes('긴급') || title.includes('critical')) {
+            labels.add('priority/high');
+          } else if (title.includes('low') || title.includes('낮음')) {
+            labels.add('priority/low');
+          } else {
+            labels.add('priority/medium');
+          }
+          
+          // 난이도 라벨링
+          if (title.includes('beginner') || title.includes('초보') || title.includes('easy')) {
+            labels.add('good first issue');
+          }
+          if (title.includes('help wanted') || title.includes('도움')) {
+            labels.add('help wanted');
+          }
+          
+          if (labels.size > 0) {
+            await github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: Array.from(labels)
+            });
+          }
+
+  issue-status-update:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+    - name: 이슈 완료 시 댓글 추가
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const body = `
+          ## 이슈 완료 🎉
+          
+          이슈가 해결되었습니다! 이용해주셔서 감사합니다.
+          
+          ### 후속 조치
+          - [ ] 해결책이 만족스러우신가요?
+          - [ ] 추가 개선사항이 있나요?
+          - [ ] 관련된 다른 이슈가 있나요?
+          
+          문제가 지속되거나 추가 질문이 있으시면 언제든 새로운 이슈를 등록해주세요!
+          
+          ---
+          *이 댓글은 자동으로 생성되었습니다.*
+          `;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          }); 
