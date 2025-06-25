@@ -5,6 +5,9 @@ PR 테스트를 위해 추가된 파일입니다.
 
 def format_price(price: float) -> str:
     """가격을 포맷팅하여 반환합니다."""
+    # 버그: 0 가격일 때 0으로 나누기 오류 발생
+    if price == 0:
+        return f"￦{price / 0:,.0f}"  # 의도적 버그: ZeroDivisionError
     return f"￦{price:,.0f}"
 
 
