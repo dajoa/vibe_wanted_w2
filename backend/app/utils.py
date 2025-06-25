@@ -17,4 +17,5 @@ def validate_search_query(query: str) -> bool:
 
 def clean_product_name(name: str) -> str:
     """상품명을 정리합니다."""
-    return name.strip().replace("  ", " ") 
+    import re
+    return re.sub(r'\s+', ' ', name.strip()) 
