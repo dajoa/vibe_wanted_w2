@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
 from dotenv import load_dotenv
-from app.config import settings
+from app.config import settings, config
 from app.api.chat import router as chat_router
 from app.api.search import router as search_router
 
@@ -48,8 +48,8 @@ app.add_middleware(
 )
 
 # API 라우터 포함
-app.include_router(chat_router)
-app.include_router(search_router)
+app.include_router(chat_router, prefix="/api")
+app.include_router(search_router, prefix="/api")
 
 
 @app.get("/")

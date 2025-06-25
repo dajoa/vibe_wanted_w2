@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+멀티턴 메모리 개발 계획
+
+구현 항목
+
+1. 메모리 시스템
+- 단기 메모리 (Short-term Memory): 세션 내 대화 히스토리 유지
+
+2. 사용자 세션 관리
+- 사용자별 고유 세션 ID 생성 및 관리
+- 세션 간 메모리 격리
+
+3. 대화 컨텍스트 향상
+- 멀티턴으로 prompt 집어넣어 그냥
+
+4. API 확장
+- 세션 기반 채팅 엔드포인트
+
+기술 스택 및 라이브러리
+핵심 라이브러리
+- LangGraph: 상태 기반 에이전트 구현
+
+
+메모리 관리
+- langgraph.store.memory.InMemoryStore: 사용자별 메모리 저장
+- langgraph.checkpoint.memory.InMemorySaver: 대화 세션 관리
+
+
+
+개발 계획
+1. 메모리 시스템 설계
+2. 사용자 세션 모델 구현
+3. 멀티턴 채팅 모델 확장
+4. 메모리 기반 에이전트 개발
+5. 세션 관리 서비스 구현
+6. API 엔드포인트 확장

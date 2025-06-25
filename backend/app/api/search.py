@@ -12,7 +12,6 @@ from app.agents.product_search_agent import ProductSearchAgent
 
 # APIRouter 인스턴스 생성
 router = APIRouter(
-    prefix="/api",
     tags=["search", "검색"],
     responses={404: {"description": "Not found"}}
 )
